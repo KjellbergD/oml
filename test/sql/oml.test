@@ -1,0 +1,35 @@
+# name: test/sql/oml.test
+# description: test oml extension
+# group: [oml]
+
+# Before we load the extension, this will fail
+statement error
+CALL Power_Consumption_load('st_lrwan1_11.oml');
+----
+Catalog Error: Table Function with name power_consumption_load does not exist!
+Did you mean "summary"?
+
+# Require statement will ensure this test is run with this extension loaded
+require oml
+
+# Confirm the extension works
+query I
+CALL Power_Consumption_load('st_lrwan1_11.oml');
+----
+67725
+
+query IIIIIIII
+SELECT * FROM Power_Consumption LIMIT 1;
+----
+3.542297
+1
+1
+1697457735
+465462
+0.283869
+4.87
+0.058263
+
+query I
+DROP TABLE Power_Consumption;
+----
